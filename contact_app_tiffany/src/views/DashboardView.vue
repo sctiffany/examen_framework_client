@@ -2,6 +2,8 @@
 import ContactsList from '@/components/ContactsList.vue';
 import ContactsListHeader from '@/components/ContactsListHeader.vue';
 import SearchContactsInput from '@/components/SearchContactsInput.vue';
+import { useContactsStore } from '@/stores/contacts';
+const contactsStore = useContactsStore();
 
 </script>
 
@@ -12,7 +14,7 @@ import SearchContactsInput from '@/components/SearchContactsInput.vue';
         <section class="w-full lg:w-2/3 bg-white rounded-lg shadow p-6">
             <ContactsListHeader />
             <SearchContactsInput />
-            <ContactsList />
+            <ContactsList :contacts="contactsStore.contacts"/>
         </section>
     </div>
 </main>
