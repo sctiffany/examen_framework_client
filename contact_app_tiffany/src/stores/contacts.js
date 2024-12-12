@@ -8,6 +8,9 @@ export const useContactsStore = defineStore('contacts', () => {
     return contacts.find(contact => contact.id === id);
   };
 
+  const contactsCount = computed(() => contacts.length);
+
+  // Boutons ajouter/supprimer/modifier
   const addContact = (contact) => {
     contacts.unshift(contact);
   };
@@ -23,8 +26,9 @@ export const useContactsStore = defineStore('contacts', () => {
     }
   };
 
+  //
   watch(contacts, (newValue, oldValue) => {
     localStorage.setItem('contacts', JSON.stringify(newValue));
   });
-  return { contacts, addContact, deleteOneById, updateContact, getContactById };
+  return { contacts, addContact, deleteOneById, updateContact, getContactById, contactsCount };
 });
