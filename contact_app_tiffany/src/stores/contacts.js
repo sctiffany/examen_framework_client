@@ -4,11 +4,24 @@ import { defineStore } from 'pinia'
 export const useContactsStore = defineStore('contacts', () => {
   const contacts = reactive(JSON.parse(localStorage.getItem('contacts')) || []);
 
+  const searchQuery = reactive({ name: '', email: '' });
+
+  const filteredContacts = computed(() => {
+    return contacts.filter((contact) => {
+      return (
+        searchQuery.name === '' ||
+        contact.name.toLowerCase().startsWith(searchQuery.name.toLowerCase()) ||
+        contact.email.toLowerCase().startsWith(searchQuery.name.toLowerCase())
+      );
+    });
+  });
+
+  const contactsCount = computed(() => filteredContacts.value.length);
+
   const getContactById = (id) => {
     return contacts.find(contact => contact.id === id);
   };
 
-  const contactsCount = computed(() => contacts.length);
 
   // Boutons ajouter/supprimer/modifier
   const addContact = (contact) => {
@@ -30,5 +43,5 @@ export const useContactsStore = defineStore('contacts', () => {
   watch(contacts, (newValue, oldValue) => {
     localStorage.setItem('contacts', JSON.stringify(newValue));
   });
-  return { contacts, addContact, deleteOneById, updateContact, getContactById, contactsCount };
+  return { contacts, addContact, deleteOneById, updateContact, getContactById, contactsCount, searchQuery, filteredContacts  };
 });

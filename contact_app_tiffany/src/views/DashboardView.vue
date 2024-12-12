@@ -14,7 +14,7 @@ const contactsStore = useContactsStore();
         <section class="w-full lg:w-2/3 bg-white rounded-lg shadow p-6">
             <ContactsListHeader />
             <SearchContactsInput />
-            <ContactsList :contacts="contactsStore.contacts"/>
+            <ContactsList :contacts="contactsStore.filteredContacts"/>
         </section>
     </div>
 </main>
