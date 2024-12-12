@@ -8,8 +8,12 @@ export const useContactsStore = defineStore('contacts', () => {
     contacts.unshift(contact);
   };
 
+  const deleteOneById = (id) => {
+    contacts.splice(contacts.findIndex((contact) => contact.id === id), 1);
+  }
+
   watch(contacts, (newValue, oldValue) => {
     localStorage.setItem('contacts', JSON.stringify(newValue));
   });
-  return { contacts, addContact };
+  return { contacts, addContact, deleteOneById };
 });

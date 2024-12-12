@@ -4,6 +4,10 @@ const contactsStore = useContactsStore();
 const props = defineProps({
     contact: Object,
 });
+
+const deleteId = (id) => {
+  contactsStore.deleteOneById(id);
+};
 </script>
 
 <template>
@@ -21,6 +25,7 @@ const props = defineProps({
             </button>
             <button
                 class="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600"
+                @click.prevent="deleteId(contact.id)"
             >
                 Delete
             </button>
