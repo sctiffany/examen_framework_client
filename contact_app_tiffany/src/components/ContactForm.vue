@@ -1,5 +1,17 @@
 <script setup>
+import { reactive } from 'vue';
+import { useContactsStore } from '@/stores/contacts';
+const contactsStore = useContactsStore();
+const newContact = reactive({ id: null, name: '', email: '', phone: ''});
 
+const add = () => {
+  newContact.id = Date.now();
+  contactsStore.addContact({...newContact});
+  newContact.name = '';
+  newContact.email = '';
+  newContact.phone = '';
+  newContact.id = null;
+};
 </script>
 
 <template>
@@ -10,6 +22,7 @@
                 type="text"
                 id="name"
                 placeholder="John Doe"
+                v-model="newContact.name"
                 class="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
         </div>
@@ -19,6 +32,7 @@
                 type="email"
                 id="email"
                 placeholder="johndoe@example.com"
+                v-model="newContact.email"
                 class="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
         </div>
@@ -28,11 +42,13 @@
                 type="tel"
                 id="phone"
                 placeholder="+123 456 789"
+                v-model="newContact.phone"
                 class="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
         </div>
         <button
         type="submit"
+        @click.prevent="add()"
         class="w-full bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
         >
         Save Contact
