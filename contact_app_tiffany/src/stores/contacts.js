@@ -4,16 +4,27 @@ import { defineStore } from 'pinia'
 export const useContactsStore = defineStore('contacts', () => {
   const contacts = reactive(JSON.parse(localStorage.getItem('contacts')) || []);
 
+  const getContactById = (id) => {
+    return contacts.find(contact => contact.id === id);
+  };
+
   const addContact = (contact) => {
     contacts.unshift(contact);
   };
 
   const deleteOneById = (id) => {
     contacts.splice(contacts.findIndex((contact) => contact.id === id), 1);
-  }
+  };
+
+  const updateContact = (updatedContact) => {
+    const index = contacts.findIndex(contact => contact.id === updatedContact.id);
+    if (index !== -1) {
+      contacts[index] = updatedContact;
+    }
+  };
 
   watch(contacts, (newValue, oldValue) => {
     localStorage.setItem('contacts', JSON.stringify(newValue));
   });
-  return { contacts, addContact, deleteOneById };
+  return { contacts, addContact, deleteOneById, updateContact, getContactById };
 });

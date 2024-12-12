@@ -2,19 +2,40 @@
 import { reactive } from 'vue';
 import { useContactsStore } from '@/stores/contacts';
 import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
+
 const contactsStore = useContactsStore();
 const newContact = reactive({ id: null, name: '', email: '', phone: ''});
 const router = useRouter();
+const query = router.currentRoute.value.query;
 
 const add = () => {
-  newContact.id = Date.now();
-  contactsStore.addContact({...newContact});
+  if (newContact.id) {
+    contactsStore.updateContact({ ...newContact });
+  } else {
+    newContact.id = Date.now();
+    contactsStore.addContact({ ...newContact });
+  }
+  
   newContact.name = '';
   newContact.email = '';
   newContact.phone = '';
   newContact.id = null;
+
   router.push('/');
 };
+
+onMounted(() => {
+  if (query.id) {
+    const contactToEdit = contactsStore.getContactById(Number(query.id));
+    if (contactToEdit) {
+      newContact.id = contactToEdit.id;
+      newContact.name = contactToEdit.name;
+      newContact.email = contactToEdit.email;
+      newContact.phone = contactToEdit.phone;
+    }
+  }
+});
 </script>
 
 <template>

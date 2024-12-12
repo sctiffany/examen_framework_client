@@ -1,5 +1,7 @@
 <script setup>
 import { useContactsStore } from '@/stores/contacts';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const contactsStore = useContactsStore();
 const props = defineProps({
     contact: Object,
@@ -8,6 +10,10 @@ const props = defineProps({
 const deleteId = (id) => {
   contactsStore.deleteOneById(id);
 };
+
+const update = (id) => {
+    router.push({ path: '/addContact', query: { id } });
+}
 </script>
 
 <template>
@@ -20,6 +26,7 @@ const deleteId = (id) => {
         <div class="flex gap-2">
             <button
                 class="bg-yellow-400 text-white px-4 py-2 rounded shadow hover:bg-yellow-500"
+                @click.prevent="update(contact.id)"
             >
                 Edit
             </button>
