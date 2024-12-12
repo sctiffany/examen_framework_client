@@ -1,13 +1,13 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { useContactsStore } from '@/stores/contacts';
-import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 const contactsStore = useContactsStore();
-const newContact = reactive({ id: null, name: '', email: '', phone: ''});
 const router = useRouter();
-const query = router.currentRoute.value.query;
+const route = useRoute();
+
+const newContact = reactive({ id: null, name: '', email: '', phone: ''});
 
 const add = () => {
   if (newContact.id) {
@@ -16,7 +16,7 @@ const add = () => {
     newContact.id = Date.now();
     contactsStore.addContact({ ...newContact });
   }
-  
+
   newContact.name = '';
   newContact.email = '';
   newContact.phone = '';
@@ -26,8 +26,9 @@ const add = () => {
 };
 
 onMounted(() => {
-  if (query.id) {
-    const contactToEdit = contactsStore.getContactById(Number(query.id));
+  const contactId = route.params.id;
+  if (contactId) {
+    const contactToEdit = contactsStore.getContactById(Number(contactId));
     if (contactToEdit) {
       newContact.id = contactToEdit.id;
       newContact.name = contactToEdit.name;

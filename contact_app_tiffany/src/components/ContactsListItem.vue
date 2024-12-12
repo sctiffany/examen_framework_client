@@ -12,7 +12,7 @@ const deleteId = (id) => {
 };
 
 const update = (id) => {
-    router.push({ path: '/addContact', query: { id } });
+    router.push(`/addContact/${id}`);
 }
 </script>
 
