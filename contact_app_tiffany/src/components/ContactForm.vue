@@ -1,8 +1,10 @@
 <script setup>
 import { reactive } from 'vue';
 import { useContactsStore } from '@/stores/contacts';
+import { useRouter } from 'vue-router';
 const contactsStore = useContactsStore();
 const newContact = reactive({ id: null, name: '', email: '', phone: ''});
+const router = useRouter();
 
 const add = () => {
   newContact.id = Date.now();
@@ -11,6 +13,7 @@ const add = () => {
   newContact.email = '';
   newContact.phone = '';
   newContact.id = null;
+  router.push('/');
 };
 </script>
 
