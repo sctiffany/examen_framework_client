@@ -2,7 +2,7 @@
 import ContactsListItem from './ContactsListItem.vue';
 const props = defineProps({
     contacts: Array,
-})
+});
 
 </script>
 

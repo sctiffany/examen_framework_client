@@ -1,6 +1,9 @@
 <script setup>
 import { useContactsStore } from '@/stores/contacts';
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+
+
 const router = useRouter();
 const contactsStore = useContactsStore();
 const props = defineProps({
@@ -9,6 +12,7 @@ const props = defineProps({
 
 const deleteId = (id) => {
   contactsStore.deleteOneById(id);
+  toast.success("Contact supprimé avec succès !");
 };
 
 const update = (id) => {

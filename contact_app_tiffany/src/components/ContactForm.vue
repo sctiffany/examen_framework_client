@@ -2,6 +2,8 @@
 import { reactive, onMounted } from 'vue';
 import { useContactsStore } from '@/stores/contacts';
 import { useRouter, useRoute } from 'vue-router';
+import { toast } from 'vue3-toastify';
+
 
 const contactsStore = useContactsStore();
 const router = useRouter();
@@ -49,22 +51,30 @@ const validateForm = () => {
 
 const add = () => {
   if (!validateForm()) {
+    toast.error("Veuillez corriger les erreurs du formulaire !");
     return;
   }
 
+  let successMessage = '';
+
   if (newContact.id) {
     contactsStore.updateContact({ ...newContact });
+    successMessage = "Contact modifié avec succès !";
   } else {
     newContact.id = Date.now();
     contactsStore.addContact({ ...newContact });
+    successMessage = "Contact ajouté avec succès !";
   }
 
+  // Réinitialiser le formulaire
   newContact.name = '';
   newContact.email = '';
   newContact.phone = '';
   newContact.id = null;
 
-  router.push('/');
+  router.push('/').then(() => {
+    toast.success(successMessage);
+  });
 };
 
 onMounted(() => {
